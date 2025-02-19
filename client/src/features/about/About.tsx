@@ -23,8 +23,11 @@ export default function About() {
     }
   }
   return (
-    <Container maxWidth="lg">
-      <Typography gutterBottom variant="h3">Errors for testing</Typography>
+    <Container 
+      maxWidth="lg" 
+      sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+    >
+      <Typography gutterBottom variant={'h2'}>Errors for testing</Typography>
       <ButtonGroup fullWidth>
         <Button variant="contained" onClick={() => trigger400error().catch(err => console.log(err))}>Test 400 error</Button>
         <Button variant="contained" onClick={() => trigger401error().catch(err => console.log(err))}>Test 401 error</Button>
@@ -43,5 +46,5 @@ export default function About() {
         </Alert>
       )}
     </Container>
-  )
+  )  
 }

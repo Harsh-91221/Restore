@@ -5,6 +5,6 @@ export type product = {
     pictureUrl: string,
     price: number,
     brand: string,
-    type?: string,
+    type: string,
     quantityInStock?: number
 }
