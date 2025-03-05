@@ -10,9 +10,11 @@ import { useBasket } from "../../lib/hooks/useBasket";
 import { currencyFormat } from "../../lib/utils";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useCreateOrderMutation } from "../orders/ordersApi";
 const steps = ['Address', 'Payment', 'Review'];
 export default function CheckoutStepper() {
     const [activeStep, setActiveStep] = useState(0);
+    const [createOrder] = useCreateOrderMutation();
     const { data: { name, ...restAddress } = {} as Address, isLoading } = useFetchAddressQuery();
     const [updateAddress] = useUpdateUserAddressMutation();
     const { basket, clearBasket } = useBasket();
@@ -53,6 +55,8 @@ export default function CheckoutStepper() {
         try {
             if (!confirmationToken || !basket?.clientSecret)
                 throw new Error('Unable to process payment');
+            const orderModel = await createOrderModel();
+            const orderResult = await createOrder(orderModel);
             const paymentResult = await stripe?.confirmPayment({
                 clientSecret: basket.clientSecret,
                 redirect: 'if_required',
@@ -61,7 +65,7 @@ export default function CheckoutStepper() {
                 }
             });
             if (paymentResult?.paymentIntent?.status === 'succeeded') {
-                navigate('/checkout/success');
+                navigate('/checkout/success', { state: orderResult });
                 clearBasket();
             }
             else if (paymentResult?.error) {
@@ -79,6 +83,13 @@ export default function CheckoutStepper() {
         finally {
             setSubmitting(false);
         }
+    }
+    const createOrderModel = async () => {
+        const shippingAddress = await getStripeAddress();
+        const paymentSummary = confirmationToken?.payment_method_preview.card;
+        if (!shippingAddress || !paymentSummary)
+            throw new Error('Problem creating order');
+        return { shippingAddress, paymentSummary };
     }
     const getStripeAddress = async () => {
         const addressElement = elements?.getElement('address');

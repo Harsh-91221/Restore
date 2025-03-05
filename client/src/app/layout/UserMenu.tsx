@@ -3,6 +3,7 @@ import { Button, Divider, Fade, ListItemIcon, ListItemText, Menu, MenuItem } fro
 import { useState } from "react";
 import { User } from "../models/user";
 import { useLogoutMutation } from "../../features/account/accountApi";
+import { Link } from "react-router-dom";
 
 type Props = {
     user: User
@@ -23,7 +24,7 @@ export default function UserMenu({ user }: Props) {
                 onClick={handleClick}
                 color='inherit'
                 size='large'
-                sx={{fontSize:'1.1rem'}}
+                sx={{ fontSize: '1.1rem' }}
             >
                 {user.email}
             </Button>
@@ -43,7 +44,7 @@ export default function UserMenu({ user }: Props) {
                     </ListItemIcon>
                     <ListItemText>My Profile</ListItemText>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem component={Link} to='/orders'>
                     <ListItemIcon>
                         <History />
                     </ListItemIcon>
