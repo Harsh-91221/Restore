@@ -2,7 +2,6 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "../layout/App";
 import Catalog from "../../features/catalog/Catalog";
 import ProductDetails from "../../features/catalog/ProductDetails";
-import { Home } from "@mui/icons-material";
 import About from "../../features/about/About";
 import Contact from "../../features/contact/Contact";
 import ServerError from "../errors/ServerError";
@@ -15,6 +14,7 @@ import RequireAuth from "./RequireAuth";
 import CheckoutSuccess from "../../features/checkout/CheckoutSuccess";
 import OrdersPage from "../../features/orders/OrdersPage";
 import OrderDetailedPage from "../../features/orders/OrderDetailedPage";
+import Home from "../../features/home/Home";
 
 export const router = createBrowserRouter([
     {
